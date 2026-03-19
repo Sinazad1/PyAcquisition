@@ -1,0 +1,137 @@
+{
+  "protocol_name": "Complete Example - All Peripheral Settings",
+  "description": "Demonstrates changing through settings for syringe pump, Tic A/B, and chiller, simplified -MK",
+  "created": "2025-01-20T00:00:00",
+  "author": "Example",
+  "steps": [
+    {
+      "step": 1,
+      "duration_minutes": 0.1,
+      "description": "STEP 1",
+      "pump": {
+        "diameter": 29.5,
+        "direction": "INF",
+        "rate": 10.0,
+        "volume": 5.0,
+        "run": true
+      },
+      "tic_a": {
+        "energize": true,
+        "velocity": 1000000
+      },
+      "tic_b": {
+        "energize": true,
+        "velocity": 500000
+      },
+      "chiller": {
+        "temperature": 25.0,
+        "pump_speed": 50,
+        "start": true
+      }
+    },
+    {
+      "step": 2,
+      "duration_minutes": 0.1,
+      "description": "STEP 2",
+      "pump": {
+        "direction": "WDR",
+        "rate": 5.0,
+        "volume": 10.0,
+        "run": true
+      },
+      "tic_a": {
+        "velocity": 2000000
+      },
+      "tic_b": {
+        "velocity": 1500000
+      },
+      "chiller": {
+        "temperature": 30.0,
+        "pump_speed": 75
+      }
+    },
+    {
+      "step": 3,
+      "duration_minutes": 0.1,
+      "description": "STEP 3",
+      "pump": {
+        "direction": "INF",
+        "rate": 20.0,
+        "volume": 25.0,
+        "run": true
+      },
+      "tic_a": {
+        "velocity": 3000000
+      },
+      "tic_b": {
+        "velocity": 2500000
+      },
+      "chiller": {
+        "temperature": 35.0,
+        "pump_speed": 100
+      }
+    },
+    {
+      "step": 4,
+      "duration_minutes": 0.1,
+      "description": "STEP 4",
+      "pump": {
+        "direction": "INF",
+        "rate": 2.0,
+        "volume": 5.0,
+        "run": true
+      },
+      "tic_a": {
+        "velocity": 500000
+      },
+      "tic_b": {
+        "velocity": 250000
+      },
+      "chiller": {
+        "temperature": 28.0,
+        "pump_speed": 40
+      }
+    },
+    {
+      "step": 5,
+      "duration_minutes": 0.1,
+      "description": "Cool down - Lower temperature, minimal pump speed",
+      "pump": {
+        "direction": "INF",
+        "rate": 1.0,
+        "volume": 2.0,
+        "run": true
+      },
+      "tic_a": {
+        "velocity": 100000
+      },
+      "tic_b": {
+        "velocity": 100000
+      },
+      "chiller": {
+        "temperature": 20.0,
+        "pump_speed": 25
+      }
+    },
+    {
+      "step": 6,
+      "duration_minutes": 0.1,
+      "description": "STEP 6",
+      "pump": {
+        "run": false
+      },
+      "tic_a": {
+        "velocity": 0,
+        "energize": false
+      },
+      "tic_b": {
+        "velocity": 0,
+        "energize": false
+      },
+      "chiller": {
+        "temperature": 25.0,
+        "start": false
+      }
+    }
+  ]
+}
