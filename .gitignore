@@ -16,7 +16,20 @@ env/
 .DS_Store
 Thumbs.db
 
+# Local secrets
+.env
+.env.local
+!.env.example
+
 # Application build/runtime outputs
 build/
 dist/
 release_snapshots/
+
+# Runtime data output
+data/
+
+# Large binary artifacts in project root
+*.exe
+*.pdf
+ionin_transfer_bundle_*.zip

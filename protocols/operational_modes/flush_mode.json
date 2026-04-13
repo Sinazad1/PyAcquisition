@@ -1,0 +1,74 @@
+{
+  "protocol_name": "Flush Mode",
+  "description": "High-flow cleaning pass between fluids/runs.",
+  "created": "2026-03-24T00:00:00",
+  "author": "IonIn CLI",
+  "steps": [
+    {
+      "step": 1,
+      "duration_minutes": 0.75,
+      "description": "High-flow flush",
+      "pump": {
+        "direction": "INF",
+        "rate": 10.0,
+        "volume": 10.0,
+        "run": true
+      },
+      "tic_a": {
+        "energize": true,
+        "velocity": 400000
+      },
+      "tic_b": {
+        "energize": true,
+        "velocity": 400000
+      },
+      "chiller": {
+        "start": true,
+        "temperature": 25.0,
+        "pump_speed": 60
+      }
+    },
+    {
+      "step": 2,
+      "duration_minutes": 0.5,
+      "description": "Reverse pulse to dislodge trapped pockets",
+      "pump": {
+        "direction": "WDR",
+        "rate": 4.0,
+        "volume": 3.0,
+        "run": true
+      },
+      "tic_a": {
+        "velocity": 200000
+      },
+      "tic_b": {
+        "velocity": 200000
+      },
+      "chiller": {
+        "temperature": 25.0,
+        "pump_speed": 50
+      }
+    },
+    {
+      "step": 3,
+      "duration_minutes": 0.5,
+      "description": "Forward final flush",
+      "pump": {
+        "direction": "INF",
+        "rate": 6.0,
+        "volume": 6.0,
+        "run": true
+      },
+      "tic_a": {
+        "velocity": 150000
+      },
+      "tic_b": {
+        "velocity": 150000
+      },
+      "chiller": {
+        "temperature": 25.0,
+        "pump_speed": 45
+      }
+    }
+  ]
+}

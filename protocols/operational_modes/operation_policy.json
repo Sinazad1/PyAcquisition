@@ -1,0 +1,66 @@
+{
+  "thresholds": {
+    "sensor_min_detect_ratio": 1.0,
+    "sensor_min_parse_ratio": 1.0
+  },
+  "interlocks": {
+    "max_pump_rate": 12.0,
+    "max_chiller_temp_c": 40.0,
+    "min_chiller_temp_c": 5.0,
+    "max_tic_velocity_abs": 500000
+  },
+  "chain_default": [
+    "prime",
+    "flush",
+    "circulation",
+    "stabilize",
+    "calibration",
+    "reference_check",
+    "rinse",
+    "safe_idle"
+  ],
+  "modes": {
+    "prime": {
+      "data_policy": "diagnostic",
+      "entry_checks": ["sensors"],
+      "exit_checks": []
+    },
+    "flush": {
+      "data_policy": "diagnostic",
+      "entry_checks": ["sensors", "pump"],
+      "exit_checks": []
+    },
+    "circulation": {
+      "data_policy": "diagnostic",
+      "entry_checks": ["sensors", "pump", "chiller"],
+      "exit_checks": ["sensors"]
+    },
+    "stabilize": {
+      "data_policy": "analysis_quality",
+      "entry_checks": ["sensors", "chiller"],
+      "exit_checks": ["sensors"]
+    },
+    "calibration": {
+      "data_policy": "analysis_quality",
+      "entry_checks": ["sensors", "pump", "chiller", "tic_a", "tic_b", "references"],
+      "exit_checks": ["sensors", "references"],
+      "preflight_required": true,
+      "reference_each_step": true
+    },
+    "reference_check": {
+      "data_policy": "diagnostic",
+      "entry_checks": ["references"],
+      "exit_checks": ["references"]
+    },
+    "rinse": {
+      "data_policy": "diagnostic",
+      "entry_checks": ["pump"],
+      "exit_checks": []
+    },
+    "safe_idle": {
+      "data_policy": "diagnostic",
+      "entry_checks": [],
+      "exit_checks": []
+    }
+  }
+}

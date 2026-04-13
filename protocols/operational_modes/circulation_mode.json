@@ -1,0 +1,53 @@
+{
+  "protocol_name": "Circulation Mode",
+  "description": "Controlled recirculation for conditioning and homogenization.",
+  "created": "2026-03-24T00:00:00",
+  "author": "IonIn CLI",
+  "steps": [
+    {
+      "step": 1,
+      "duration_minutes": 1.0,
+      "description": "Bring loop to nominal circulation",
+      "pump": {
+        "direction": "INF",
+        "rate": 3.0,
+        "volume": 8.0,
+        "run": true
+      },
+      "tic_a": {
+        "energize": true,
+        "velocity": 200000
+      },
+      "tic_b": {
+        "energize": true,
+        "velocity": 200000
+      },
+      "chiller": {
+        "start": true,
+        "temperature": 25.0,
+        "pump_speed": 50
+      }
+    },
+    {
+      "step": 2,
+      "duration_minutes": 2.0,
+      "description": "Steady circulation hold",
+      "pump": {
+        "direction": "INF",
+        "rate": 2.5,
+        "volume": 10.0,
+        "run": true
+      },
+      "tic_a": {
+        "velocity": 150000
+      },
+      "tic_b": {
+        "velocity": 150000
+      },
+      "chiller": {
+        "temperature": 25.0,
+        "pump_speed": 45
+      }
+    }
+  ]
+}

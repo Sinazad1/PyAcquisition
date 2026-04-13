@@ -1,0 +1,74 @@
+{
+  "protocol_name": "Rinse Mode",
+  "description": "Post-run rinse cycle to reduce carryover before shutdown/storage.",
+  "created": "2026-03-24T00:00:00",
+  "author": "IonIn CLI",
+  "steps": [
+    {
+      "step": 1,
+      "duration_minutes": 1.0,
+      "description": "Rinse forward",
+      "pump": {
+        "direction": "INF",
+        "rate": 6.0,
+        "volume": 8.0,
+        "run": true
+      },
+      "tic_a": {
+        "energize": true,
+        "velocity": 150000
+      },
+      "tic_b": {
+        "energize": true,
+        "velocity": 150000
+      },
+      "chiller": {
+        "start": true,
+        "temperature": 25.0,
+        "pump_speed": 50
+      }
+    },
+    {
+      "step": 2,
+      "duration_minutes": 0.5,
+      "description": "Rinse reverse pulse",
+      "pump": {
+        "direction": "WDR",
+        "rate": 2.5,
+        "volume": 2.0,
+        "run": true
+      },
+      "tic_a": {
+        "velocity": 100000
+      },
+      "tic_b": {
+        "velocity": 100000
+      },
+      "chiller": {
+        "temperature": 25.0,
+        "pump_speed": 40
+      }
+    },
+    {
+      "step": 3,
+      "duration_minutes": 0.5,
+      "description": "Final gentle rinse and stop",
+      "pump": {
+        "direction": "INF",
+        "rate": 1.0,
+        "volume": 1.5,
+        "run": false
+      },
+      "tic_a": {
+        "velocity": 0
+      },
+      "tic_b": {
+        "velocity": 0
+      },
+      "chiller": {
+        "temperature": 25.0,
+        "start": false
+      }
+    }
+  ]
+}

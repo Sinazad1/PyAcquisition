@@ -1,0 +1,53 @@
+{
+  "protocol_name": "Prime Mode",
+  "description": "Initial line fill and bubble purge before measurement runs.",
+  "created": "2026-03-24T00:00:00",
+  "author": "IonIn CLI",
+  "steps": [
+    {
+      "step": 1,
+      "duration_minutes": 0.5,
+      "description": "Fast prime",
+      "pump": {
+        "direction": "INF",
+        "rate": 8.0,
+        "volume": 5.0,
+        "run": true
+      },
+      "tic_a": {
+        "energize": true,
+        "velocity": 300000
+      },
+      "tic_b": {
+        "energize": true,
+        "velocity": 300000
+      },
+      "chiller": {
+        "start": true,
+        "temperature": 25.0,
+        "pump_speed": 40
+      }
+    },
+    {
+      "step": 2,
+      "duration_minutes": 0.25,
+      "description": "Slow purge and settle",
+      "pump": {
+        "direction": "INF",
+        "rate": 2.0,
+        "volume": 2.0,
+        "run": true
+      },
+      "tic_a": {
+        "velocity": 100000
+      },
+      "tic_b": {
+        "velocity": 100000
+      },
+      "chiller": {
+        "temperature": 25.0,
+        "pump_speed": 30
+      }
+    }
+  ]
+}

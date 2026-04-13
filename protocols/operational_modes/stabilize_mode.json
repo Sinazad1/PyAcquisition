@@ -1,0 +1,53 @@
+{
+  "protocol_name": "Stabilize Mode",
+  "description": "Low-disturbance hold to stabilize thermal and conductivity readings.",
+  "created": "2026-03-24T00:00:00",
+  "author": "IonIn CLI",
+  "steps": [
+    {
+      "step": 1,
+      "duration_minutes": 1.0,
+      "description": "Low-flow pre-stabilization",
+      "pump": {
+        "direction": "INF",
+        "rate": 1.0,
+        "volume": 2.0,
+        "run": true
+      },
+      "tic_a": {
+        "energize": true,
+        "velocity": 50000
+      },
+      "tic_b": {
+        "energize": true,
+        "velocity": 50000
+      },
+      "chiller": {
+        "start": true,
+        "temperature": 25.0,
+        "pump_speed": 35
+      }
+    },
+    {
+      "step": 2,
+      "duration_minutes": 2.0,
+      "description": "Stabilization hold (minimal motion)",
+      "pump": {
+        "direction": "INF",
+        "rate": 0.5,
+        "volume": 1.0,
+        "run": true
+      },
+      "tic_a": {
+        "velocity": 0
+      },
+      "tic_b": {
+        "velocity": 0
+      },
+      "chiller": {
+        "temperature": 25.0,
+        "pump_speed": 30
+      }
+    }
+  ]
+}

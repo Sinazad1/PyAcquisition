@@ -6,3 +6,6 @@ pandas
 matplotlib
 scipy
 openpyxl
+google-generativeai
+duckduckgo-search
+python-dotenv

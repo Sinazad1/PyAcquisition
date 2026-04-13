@@ -1,0 +1,74 @@
+{
+  "protocol_name": "Calibration Mode",
+  "description": "Baseline multi-step calibration recipe across moderate operating points.",
+  "created": "2026-03-24T00:00:00",
+  "author": "IonIn CLI",
+  "steps": [
+    {
+      "step": 1,
+      "duration_minutes": 1.0,
+      "description": "Calibration point A (cool, low flow)",
+      "pump": {
+        "direction": "INF",
+        "rate": 1.0,
+        "volume": 3.0,
+        "run": true
+      },
+      "tic_a": {
+        "energize": true,
+        "velocity": 80000
+      },
+      "tic_b": {
+        "energize": true,
+        "velocity": 80000
+      },
+      "chiller": {
+        "start": true,
+        "temperature": 23.0,
+        "pump_speed": 35
+      }
+    },
+    {
+      "step": 2,
+      "duration_minutes": 1.0,
+      "description": "Calibration point B (nominal)",
+      "pump": {
+        "direction": "INF",
+        "rate": 2.0,
+        "volume": 4.0,
+        "run": true
+      },
+      "tic_a": {
+        "velocity": 120000
+      },
+      "tic_b": {
+        "velocity": 120000
+      },
+      "chiller": {
+        "temperature": 25.0,
+        "pump_speed": 45
+      }
+    },
+    {
+      "step": 3,
+      "duration_minutes": 1.0,
+      "description": "Calibration point C (warm, higher flow)",
+      "pump": {
+        "direction": "INF",
+        "rate": 3.0,
+        "volume": 5.0,
+        "run": true
+      },
+      "tic_a": {
+        "velocity": 160000
+      },
+      "tic_b": {
+        "velocity": 160000
+      },
+      "chiller": {
+        "temperature": 28.0,
+        "pump_speed": 55
+      }
+    }
+  ]
+}
