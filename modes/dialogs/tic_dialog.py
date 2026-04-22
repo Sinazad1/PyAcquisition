@@ -43,6 +43,7 @@ class TicDialog(QDialog):
         self.tic_threads = {'A': None, 'B': None}
         self.is_connected = {'A': False, 'B': False}
         self.is_energized = {'A': False, 'B': False}
+        self._last_connection_error = {'A': '', 'B': ''}
         self.serial_numbers = {
             'A': serial_number_a,
             'B': serial_number_b
@@ -200,9 +201,25 @@ class TicDialog(QDialog):
         # Control buttons
         main_layout.addWidget(self._create_control_buttons())
         
-        # Close button
+        # Bottom buttons: Retry + Close
         close_layout = QHBoxLayout()
         close_layout.addStretch()
+
+        self.retry_button = QPushButton("Retry Connection")
+        self.retry_button.setStyleSheet("""
+            QPushButton {
+                background-color: #E67E22;
+                color: white;
+                padding: 10px 20px;
+                font-size: 11pt;
+                font-weight: bold;
+                border-radius: 3px;
+            }
+            QPushButton:hover { background-color: #CA6F1E; }
+        """)
+        self.retry_button.clicked.connect(self.retry_connection)
+        close_layout.addWidget(self.retry_button)
+
         close_button = QPushButton("Close")
         close_button.setStyleSheet("""
             QPushButton {
@@ -213,9 +230,7 @@ class TicDialog(QDialog):
                 font-weight: bold;
                 border-radius: 3px;
             }
-            QPushButton:hover {
-                background-color: #555;
-            }
+            QPushButton:hover { background-color: #555; }
         """)
         close_button.clicked.connect(self.close)
         close_layout.addWidget(close_button)
@@ -308,14 +323,24 @@ class TicDialog(QDialog):
             self.energize_button.setEnabled(True)
             self.deenergize_button.setEnabled(True)
         else:
-            self.status_label.setText(f"TIC {tic} Not Connected")
+            err = self._last_connection_error.get(tic, '')
+            if err:
+                # Strip common ticcmd prefix noise for brevity
+                short_err = err.replace('Tic not accessible', 'device not found by ticcmd')
+                self.status_label.setText(f"TIC {tic} Not Connected — {short_err}")
+            else:
+                serial = self.serial_numbers.get(tic)
+                if not serial:
+                    self.status_label.setText(f"TIC {tic} — No serial number configured")
+                else:
+                    self.status_label.setText(f"TIC {tic} Not Connected")
             self.status_label.setStyleSheet("""
                 QLabel {
                     background-color: #FFA500;
                     color: black;
                     padding: 8px;
                     font-weight: bold;
-                    font-size: 12pt;
+                    font-size: 11pt;
                     border-radius: 3px;
                 }
             """)
@@ -529,6 +554,26 @@ class TicDialog(QDialog):
         group.setLayout(layout)
         return group
     
+    def retry_connection(self):
+        """Stop existing threads and reconnect both TICs."""
+        for tic_id in ['A', 'B']:
+            if self.tic_threads[tic_id] and self.tic_threads[tic_id].isRunning():
+                self.tic_threads[tic_id].stop()
+                self.tic_threads[tic_id].wait(2000)
+                self.tic_threads[tic_id] = None
+            self.is_connected[tic_id] = False
+            self._last_connection_error[tic_id] = ''
+
+        self.update_display_for_selected_tic()
+
+        if self.parent_window and hasattr(self.parent_window, 'log_event'):
+            self.parent_window.log_event("Retrying TIC connection...", color="#FFA500", log_type="TIC")
+
+        if self.serial_numbers['A']:
+            self.connect_tic('A')
+        if self.serial_numbers['B']:
+            self.connect_tic('B')
+
     def connect_tic(self, tic_id):
         """Connect to a TIC controller"""
         serial_number = self.serial_numbers[tic_id]
@@ -586,7 +631,6 @@ class TicDialog(QDialog):
         self.is_connected[tic_id] = connected
         
         if connected:
-            # Log to main window if available
             if self.parent_window and hasattr(self.parent_window, 'log_event'):
                 self.parent_window.log_event(
                     f"Tic {tic_id} controller connected: {self.serial_numbers[tic_id]}",
@@ -594,13 +638,14 @@ class TicDialog(QDialog):
                     log_type=f"TIC-{tic_id}"
                 )
         else:
-            # Log to main window
             if self.parent_window and hasattr(self.parent_window, 'log_event'):
                 self.parent_window.log_event(
                     f"Tic {tic_id} connection failed: {message}",
                     color="#f44336",
                     log_type=f"TIC-{tic_id}"
                 )
+            # Show failure reason in dialog so user doesn't have to hunt the log
+            self._last_connection_error[tic_id] = message
         
         # Update display if this is the selected TIC
         if tic_id == self.selected_tic:
