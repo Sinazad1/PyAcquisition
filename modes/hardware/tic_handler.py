@@ -38,15 +38,9 @@ class TicThread(QThread):
         try:
             # Verify Tic is accessible
             result = self.get_status()
-            
             if result:
                 self.running = True
                 self.connection_status.emit(True, f"Connected to Tic {self.serial_number}")
-                
-                # Stop all motion at start 
-                #self.set_velocity(0) - should be unneeded, MK
-                
-                # Emit initial status
                 self.status_received.emit(result)
             else:
                 self.error_occurred.emit(f"Tic {self.serial_number} not found or not responding")

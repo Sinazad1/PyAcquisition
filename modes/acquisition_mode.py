@@ -998,14 +998,15 @@ class AcquisitionWindow(QMainWindow):
                     ref_measurements[ibp_ref_id] = ibp_data
                     refs_updated.append(ibp_ref_id) if ibp_ref_id not in refs_updated else None
             
-            # Write all measurements for this timestamp as one consolidated CSV row
+            # Write all measurements for this timestamp as one consolidated CSV row.
+            # data_manager always writes so measurements_TIMESTAMP.csv is always populated.
+            # ionin_storage_adapter writes its sidecar in parallel when IonIn is active.
             if dut_measurements or ref_measurements:
+                self.data_manager.write_consolidated_row(
+                    timestamp, dut_measurements, ref_measurements
+                )
                 if self.ionin_storage_adapter is not None:
                     self.ionin_storage_adapter.write_consolidated_row(
-                        timestamp, dut_measurements, ref_measurements
-                    )
-                else:
-                    self.data_manager.write_consolidated_row(
                         timestamp, dut_measurements, ref_measurements
                     )
                 

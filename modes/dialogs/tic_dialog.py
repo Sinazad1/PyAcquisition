@@ -532,7 +532,7 @@ class TicDialog(QDialog):
     def connect_tic(self, tic_id):
         """Connect to a TIC controller"""
         serial_number = self.serial_numbers[tic_id]
-        
+
         if not serial_number:
             # Log error to parent window
             if self.parent_window and hasattr(self.parent_window, 'log_event'):
